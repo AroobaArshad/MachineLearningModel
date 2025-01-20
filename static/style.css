@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@font-face {
+	font-family:"doodle-font";
+	src: url("your-doodle-font.regular.ttf") format("truetype");
+}
+
+/* General styles for the whole page */
+* {
+    margin: 0;
+    list-style: none;
+    text-decoration: none;
+    padding: 0;
+    box-sizing: border-box;
+	background-image: url('vidBg.mp4');
+    background-repeat: no-repeat;
+	background-size: 100% 100%;
+    background-attachment: fixed;
+}
+
+body {
+	font-family:"doodle-font";
+	background-color: rgba(255, 253, 240, 0);    
+}
+ 
+/* Style the video: 100% width and height to cover the entire window */
+#myVideo {
+   width: 100vw;
+   height: 100vh;
+   object-fit: cover;
+   position: fixed;
+   left: 0;
+   right: 0;
+   top: 0;
+   bottom: 0;
+   z-index: -1;
+}
+
+img{
+	width: 100%;
+	height: 100px;
+}
+
+#intro {
+    text-align: center;
+    margin-top: 25%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+#intro p {
+	color: rgb(48, 48, 48);
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+	text-shadow: 1px 1px rgb(0, 0, 0);
+}
+  
+.push_buttons {
+	background-color: #af894d00;
+	font-size: 20px;
+	color: rgb(98, 77, 40);
+	border: 5px solid rgb(168, 136, 72);
+	border-radius: 12px;
+	padding: 12px 34px;
+	text-align: center;
+	cursor: pointer;
+	box-shadow: 6px 6px rgb(122, 98, 49);
+	text-shadow: 1px 1px rgb(212, 180, 125);
+	margin: 10px;
+	width: 18%;
+	font-family:"doodle-font";
+	transition: all ease-in-out 0.5s;
+
+	&:hover {
+		background-color: rgb(255, 253, 165);
+		transition: all ease-in-out 0.5s;
+		box-shadow: 0px 0px;
+	}
+}
+
+#call_to_action {
+	font-size: 1.5rem;
+	color: #e77b2f;
+	position: relative;
+	left: 44px
+}
