@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Doodle Classifier</title>
+    <!--Styles-->
+    <link href="https://fonts.googleapis.com/css?family=Dosis" rel="stylesheet">
+    <link href="{{ url_for('static', filename='doodle_classifier_style.css') }}" rel="stylesheet">
+  </head>
+
+
+  <body>
+
+    <video autoplay muted id="myVideo">
+      <source src="static\pageTwoVid.mp4" type="video/mp4">
+    </video>
+      
+    <img src="static\heading.png" alt="" height="160" class="image">
+    <main>
+      <div id="content-wrapper">
+        
+        <div id="objects-list">
+          <table>  
+            <tr>
+              <td>Apple</td> 
+              <td>Bee</td>   
+              <td>Ice Cream</td>         
+            </tr>
+            <tr>    
+              <td>Book</td>
+              <td>Leaf</td>
+              <td>House</td>
+            </tr>
+            <tr>
+              <td>Butterfly</td>
+              <td>Candle</td>
+              <td>Camera</td>
+            </tr>
+            <tr>             
+              <td>Car</td>
+              <td>Cloud</td>
+              <td>Laptop</td>
+            </tr>
+            <tr>
+              <td>Donut</td>
+              <td>Eyeglasses</td>
+              <td>Flower</td>
+            </tr>
+            <tr>
+              <td>Birthday Cake</td>
+              <td>Coffee Cup</td> 
+              <td>Ladder</td>
+            </tr>
+          </table>
+        </div>
+    
+        <div id="drawing-area">
+          <span>
+            <span id="call_to_action">Draw Here</span>
+            <br />
+            <canvas id="canvas" width="300" height="300"></canvas>
+            <br />
+            <button id="predict" class="push_buttons_one">Predict</button>
+            <button id="clear" class="push_buttons_two">Clear</button>
+          </span>
+        </div>
+
+        <div class="objects-list">
+          <table>
+            <tr>
+              <td>Light Bulb</td>
+              <td>Moon</td>
+              <td>Pencil</td>
+            </tr>
+            <tr>
+              <td>Octopus</td>
+              <td>Penguin</td>
+              <td>Strawberry</td>
+            </tr>
+            <tr>
+              <td>Pineapple</td>
+              <td>Rainbow</td>
+              <td>Star</td>
+            </tr>
+            <tr>
+              <td>Smiley Face</td>
+              <td>Snowman</td>
+              <td>Snowflake</td>
+            </tr>
+            <tr>
+              <td>Tree</td>
+              <td>T-shirt</td>
+              <td>Watermelon</td>
+            </tr>
+            <tr>
+              <td>Traffic Light</td>
+              <td>Tennis Racquet</td>
+              <td>Umbrella</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    
+      <div id="response-area">
+        <span>
+            <h2>Predicted Output</h2>
+            <ul>
+                <li id="result"></li>
+                <li id="fun_fact"></li> <!-- This is where the fun fact will go -->
+            </ul>
+        </span>
+      </div>
+    
+    </main>
+    
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <script src="{{ url_for('static',filename='index.js') }}"></script>
+
+    <script>
+      $("#predict").click(function() {
+        var canvasObj = document.getElementById("canvas");
+        var img = canvasObj.toDataURL("image/png");
+        console.log("Sending image data...");  // Debug
+    
+        $.ajax({
+            type: "POST",
+            url: "/predict/",
+            contentType: "application/json",
+            data: JSON.stringify({ image: img }),
+            success: function(data) {
+                console.log("Response received:", data);  // Debug
+                let result = JSON.parse(data);
+                $('#result').text("Prediction: " + result["prediction"]);  // Display the predicted class
+                $('#fun_fact').text("Fun Fact: " + result["fun_fact"]);  // Display the fun fact
+            },
+            error: function(xhr, status, error) {
+                console.error("Error: " + error);
+            }
+        });
+      });
+    </script>    
+
+  </body>
+
+</html>

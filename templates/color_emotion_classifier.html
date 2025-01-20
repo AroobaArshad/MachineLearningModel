@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Color Emotion Classifier</title>
+  <link href="https://fonts.googleapis.com/css?family=Dosis" rel="stylesheet">
+  <link href="{{ url_for('static', filename='color_emotion_style.css') }}" rel="stylesheet">
+</head>
+<body>
+  <main>
+
+    <img src="static\colorHeading.png" alt="" height="160" class="image">
+
+    <div id="intro">
+
+      <img src="static\giphy.gif" alt="" height="160" class="gif">
+
+      
+      <!-- Color Palette Section -->
+      <div id="color-palette">
+        <button class="color-btn" style="background-color: red;" onclick="classifyEmotion('red')">Red</button>
+        <button class="color-btn" style="background-color: blue;" onclick="classifyEmotion('blue')">Blue</button>
+        <button class="color-btn" style="background-color: yellow;" onclick="classifyEmotion('yellow')">Yellow</button>
+        <button class="color-btn" style="background-color: green;" onclick="classifyEmotion('green')">Green</button>
+        <button class="color-btn" style="background-color: purple;" onclick="classifyEmotion('purple')">Purple</button>
+        <button class="color-btn" style="background-color: pink;" onclick="classifyEmotion('pink')">Pink</button>
+        <button class="color-btn" style="background-color: orange;" onclick="classifyEmotion('orange')">Orange</button>
+        <button class="color-btn" style="background-color: brown;" onclick="classifyEmotion('brown')">Brown</button>
+        <button class="color-btn" style="background-color: grey;" onclick="classifyEmotion('grey')">Grey</button>
+        <button class="color-btn" style="background-color: turquoise;" onclick="classifyEmotion('turquoise')">Turquoise</button>
+        <button class="color-btn" style="background-color: maroon;" onclick="classifyEmotion('maroon')">Maroon</button>
+        <button class="color-btn" style="background-color: lime;" onclick="classifyEmotion('lime')">Lime</button>
+        <button class="color-btn" style="background-color: lavender;" onclick="classifyEmotion('lavender')">Lavender</button>
+        <button class="color-btn" style="background-color: #00ffff;" onclick="classifyEmotion('#00ffff')">Cyan</button>
+        <button class="color-btn" style="background-color: beige;" onclick="classifyEmotion('beige')">Beige</button>
+        <button class="color-btn" style="background-color: #ffe5b4;" onclick="classifyEmotion('#ffe5b4')">Peach</button>
+        <button class="color-btn" style="background-color: gold;" onclick="classifyEmotion('gold')">Gold</button>
+        <button class="color-btn" style="background-color: silver;" onclick="classifyEmotion('silver')">Silver</button>
+        <button class="color-btn" style="background-color: indigo;" onclick="classifyEmotion('indigo')">Indigo</button>
+        <button class="color-btn" style="background-color: violet;" onclick="classifyEmotion('violet')">Violet</button>
+        <button class="color-btn" style="background-color: coral;" onclick="classifyEmotion('coral')">Coral</button>
+        <button class="color-btn" style="background-color: #3eb489;" onclick="classifyEmotion('#3eb489')">Mint</button>
+        <button class="color-btn" style="background-color: #7cb9e8;" onclick="classifyEmotion('#7cb9e8')">Coal</button>
+        <button class="color-btn" style="background-color: #36454f;" onclick="classifyEmotion('#36454f')">Charcoal</button>
+        <button class="color-btn" style="background-color: fuchsia;" onclick="classifyEmotion('fuchsia')">Fuchsia</button>
+        <button class="color-btn" style="background-color: chartreuse;" onclick="classifyEmotion('chartreuse')">Chartreuse</button>
+      </div>
+
+      
+      <div id="emotion-result">
+        <!-- This will display the emotion result after classification -->
+      </div>
+
+      <div class="gifs">
+        <img src="static\rainbowgif.gif" alt="" class="rainbowgif">
+        <img src="static\arrow.gif" alt="" class="arrowgif">
+        <img src="static\emotions.gif" alt="" class="emotionsgif">
+      </div>
+      
+
+    </div>
+  </main>
+
+  <script>
+    function classifyEmotion(color) {
+      // Change background color with smooth transition
+      document.body.style.backgroundColor = color;
+
+      fetch('/predict-color-emotion', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ color: color })
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('emotion-result').innerHTML = `<p>Emotion: ${data.emotion}</p>`;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    }
+  </script>
+
+</body>
+</html>

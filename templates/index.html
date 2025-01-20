@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to Doodle Classifier</title>
+  <link href="https://fonts.googleapis.com/css?family=Dosis" rel="stylesheet">
+  <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+  
+</head>
+<body>
+
+  <video autoplay muted id="myVideo">
+    <source src="static\vidBg.mp4" type="video/mp4">
+  </video>
+
+  <main>
+    <div id="intro">
+      <p>Choose What You Want To Do</p>
+      <button class="push_buttons" onclick="window.location.href='/classifier'">Start Drawing</button>
+      <button class="push_buttons" onclick="window.location.href='/color-emotion-classifier'">Classify Emotion by Color</button>
+      <button onclick="window.location.href='/animal-doodle'" class="push_buttons">Animal Doodle Classifier</button>
+    </div>
+  </main>
+
+
+  <script>
+    document.getElementById("start-btn").addEventListener("click", function() {
+      window.location.href = "/classifier";  // Correct route to the classifier page
+    });
+  </script>
+</body>
+</html>

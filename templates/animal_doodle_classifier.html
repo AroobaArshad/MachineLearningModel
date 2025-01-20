@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Doodle Classifier</title>
+    <link href="https://fonts.googleapis.com/css?family=Dosis" rel="stylesheet">
+    <link href="{{ url_for('static', filename='animal_style.css') }}" rel="stylesheet">
+</head>
+<body>
+
+    <video autoplay muted id="myVideo">
+        <source src="static\animalVid.mp4" type="video/mp4">
+    </video>
+
+    <img src="static\animalHeading.png" alt="" height="130" class="image">
+
+    <main>
+        <div id="animal-content-wrapper">
+            <img src="static\animalList.png" alt="" class="animalList">
+
+            <div id="animal-drawing-area">
+                <span>
+                    <span id="call_to_action">Draw an Animal!</span>
+                    <br />
+                    <canvas id="animalCanvas" width="300" height="300"></canvas>
+                    <br />
+                    <button id="classifyAnimal" class="push_buttons_one">Classify</button>
+                    <button id="clearAnimal" class="push_buttons_two">Clear</button>
+                </span>
+            </div>
+        </div>
+
+        <div id="response-area">
+            <span>
+                <h2>Predicted Animal</h2>
+                <ul>
+                    <li id="result"></li>
+                    <li id="fun_fact"></li>
+                </ul>
+            </span>
+        </div>
+    </main>
+
+    <audio id="animalSound"></audio>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ url_for('static', filename='animal_canvas.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#classifyAnimal').click(function() {
+                var canvas = document.getElementById('animalCanvas');
+                var imageData = canvas.toDataURL('image/png');  // Capture the canvas image as base64-encoded PNG
+                console.log("Sending animal image data...");
+
+                $.ajax({
+                    url: '/predict-animal',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ image: imageData }),  // Send the captured image data
+                    success: function(response) {
+                        console.log(response);  // Check the response in the console
+
+                        // Display the prediction and fun fact
+                        $('#result').text('Predicted Animal: ' + response.prediction);
+                        $('#fun_fact').text('Fun Fact: ' + response.fun_fact);
+
+                        // Play the sound associated with the predicted animal
+                        var animalSound = document.getElementById('animalSound');
+                        animalSound.src = response.sound;  // Set the sound source from the response
+                        animalSound.play();  // Play the sound
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
+        });  // <-- This is the closing bracket for $(document).ready()
+    </script>
+</body>
+</html>

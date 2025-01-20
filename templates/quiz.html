@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personality Quiz</title>
+</head>
+<body>
+    <h1>Personality Trait Quiz</h1>
+    <form id="quiz-form">
+        <h3>Extraversion (2 questions)</h3>
+        <label for="EXT1">1. I am the life of the party:</label>
+        <input type="number" id="EXT1" name="EXT1" min="1" max="5" required><br>
+    
+        <label for="EXT2">2. I feel comfortable around people:</label>
+        <input type="number" id="EXT2" name="EXT2" min="1" max="5" required><br>
+    
+        <h3>Neuroticism (2 questions)</h3>
+        <label for="EST1">1. I get stressed out easily:</label>
+        <input type="number" id="EST1" name="EST1" min="1" max="5" required><br>
+    
+        <label for="EST2">2. I often feel anxious or worried:</label>
+        <input type="number" id="EST2" name="EST2" min="1" max="5" required><br>
+    
+        <h3>Agreeableness (2 questions)</h3>
+        <label for="AGR1">1. I am helpful and considerate to others:</label>
+        <input type="number" id="AGR1" name="AGR1" min="1" max="5" required><br>
+    
+        <label for="AGR2">2. I tend to avoid conflict with others:</label>
+        <input type="number" id="AGR2" name="AGR2" min="1" max="5" required><br>
+    
+        <h3>Conscientiousness (2 questions)</h3>
+        <label for="CSN1">1. I pay attention to details:</label>
+        <input type="number" id="CSN1" name="CSN1" min="1" max="5" required><br>
+    
+        <label for="CSN2">2. I prefer to plan things carefully:</label>
+        <input type="number" id="CSN2" name="CSN2" min="1" max="5" required><br>
+    
+        <h3>Openness (2 questions)</h3>
+        <label for="OPN1">1. I enjoy trying new things:</label>
+        <input type="number" id="OPN1" name="OPN1" min="1" max="5" required><br>
+    
+        <label for="OPN2">2. I am curious and like to explore new ideas:</label>
+        <input type="number" id="OPN2" name="OPN2" min="1" max="5" required><br>
+    
+        <button type="submit">Submit</button>
+    </form>
+    
+
+    <h2 id="result"></h2>
+
+    <script>
+        document.getElementById("quiz-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const answers = [
+                document.getElementById("extraversion").value,
+                document.getElementById("neuroticism").value,
+                document.getElementById("agreeableness").value,
+                document.getElementById("conscientiousness").value,
+                document.getElementById("openness").value
+            ];
+
+            fetch('/predict-personality', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ answers: answers })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.dominant_trait) {
+                    document.getElementById("result").innerText = "Your dominant personality trait is: " + data.dominant_trait;
+                } else {
+                    document.getElementById("result").innerText = "Error: " + data.error;
+                }
+            })
+            .catch(error => {
+                document.getElementById("result").innerText = "An error occurred: " + error;
+            });
+        });
+    </script>
+</body>
+</html>
